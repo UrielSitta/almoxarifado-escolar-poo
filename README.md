@@ -3,49 +3,63 @@
 **Programação Orientada a Objetos I — Parte 2: Implementação em Python e Testes**  
 Instituto Federal Catarinense — Campus Concórdia
 
-Projeto desenvolvido para representar o funcionamento de um almoxarifado escolar, com cadastro de materiais, perfis de usuários, requisições, movimentações de estoque e inventários físicos.
+O projeto simula um almoxarifado escolar com cadastro de categorias e materiais, perfis de usuários, requisições, entradas e saídas de estoque e inventários físicos.
 
-## Como executar
+## Integrantes e módulos
 
-É necessário **Python 3.10 ou superior**. Não são utilizadas bibliotecas externas.
+| Integrante | Arquivo | Responsabilidade |
+|---|---|---|
+| Daniel Henrique Petry | `almoxarifado/usuarios.py` | Usuários, permissões, herança e abstração |
+| Daniel Murilo Pramio | `almoxarifado/catalogo.py` | Categorias e materiais, CRUD e desativação |
+| Uriel Angelo Heckler Sitta | `almoxarifado/requisicoes.py` | Requisições, análise, aprovação e recusa |
+| Victor Juan Morche | `almoxarifado/estoque.py` | Estoque, movimentações, entregas e inventário |
+
+## Requisitos
+
+Python 3.10 ou superior. Sem dependências externas.
+
+## Executar o sistema interativo
+
+Abra um terminal na raiz do projeto e execute:
 
 ```bash
 python main.py
 ```
 
-Para executar os testes:
+O `main.py` abre um menu que permite cadastrar e consultar materiais, atualizar quantidades, solicitar materiais, analisar requisições, registrar entregas, fazer inventários e emitir relatórios. Para encerrar, selecione a opção **0 — Sair**.
+
+## Executar os testes automatizados
 
 ```bash
-python -m unittest discover -s tests -v
+python -m unittest test_sistema -v
 ```
+
+Também é possível executar diretamente:
+
+```bash
+python test_sistema.py
+```
+
+O arquivo `test_sistema.py` contém **25 testes**, distribuídos entre os módulos de usuários, catálogo, requisições, estoque e a integração com o menu interativo. Ele verifica as principais regras de negócio:
+
+- **RN1:** nenhuma saída é autorizada quando a quantidade solicitada supera o estoque disponível; o saldo e o histórico de movimentações são preservados.
+- **RN2:** materiais desativados não podem ser adicionados a novas requisições; as movimentações antigas são preservadas.
 
 ## Estrutura
 
 ```text
-README.md
-main.py
-almoxarifado/
-  __init__.py
-  usuarios.py
-  catalogo.py
-  requisicoes.py
-  estoque.py
-tests/
-  __init__.py
-  test_usuarios.py
-  test_catalogo.py
-  test_requisicoes.py
-  test_estoque.py
-  test_integracao.py
+almoxarifado-escolar-poo/
+├── almoxarifado/
+│   ├── __init__.py
+│   ├── usuarios.py
+│   ├── catalogo.py
+│   ├── requisicoes.py
+│   └── estoque.py
+├── main.py
+├── test_sistema.py
+└── README.md
 ```
 
-## Modelagem e regras do sistema
+## Observações
 
-- **Abstração, herança e polimorfismo:** `Usuario` é uma classe abstrata; `Administrador`, `Almoxarife` e `Servidor` a especializam e implementam `permissoes()`.
-- **Encapsulamento:** atributos internos são protegidos, com acesso e alterações controlados por métodos e propriedades.
-- **Requisições:** os pedidos podem ser aprovados, recusados e atendidos parcialmente.
-- **Regra 1:** nenhuma saída pode exceder a quantidade disponível, e a movimentação deve ser registrada.
-- **Regra 2:** materiais desativados não podem ser incluídos em novas solicitações, mas seu histórico é preservado.
-- **Permissões:** aprovação/recusa, movimentações e ajustes de inventário exigem o perfil de almoxarife nos fluxos implementados.
-
-A execução de `main.py` demonstra a interação entre os módulos. O projeto é um protótipo acadêmico com dados em memória; não possui interface gráfica, banco de dados ou autenticação de sessão.
+Trata-se de um protótipo acadêmico que mantém os dados **somente em memória**: os cadastros e movimentações são perdidos quando o programa é encerrado. Não há banco de dados ou interface gráfica; a interação ocorre no terminal.
